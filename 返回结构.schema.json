@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.com/news-categories/返回结构.schema.json",
   "title": "新闻分类打标返回结构",
-  "description": "主题 + 实体双轨制打标结果的 JSON Schema。included=false 时 theme/entity 为 null；included=true 时 theme/entity 必填。",
+  "description": "主题 + 实体双轨制打标结果的 JSON Schema。included=false 时 theme/entities 为 null；included=true 时 theme/entities 必填。",
   "type": "object",
   "required": ["included", "reason"],
   "properties": {
@@ -52,15 +52,15 @@
       "required": ["name", "sub"],
       "additionalProperties": false
     },
-    "entity": {
-      "description": "实体标签列表；included=false 时为 null。",
+    "entities": {
+      "description": "实体标签列表；included=false 时为 null。只打重点、无数量上限；maxItems 仅为机器兜底上限。",
       "type": ["array", "null"],
       "minItems": 1,
-      "maxItems": 15,
+      "maxItems": 100,
       "uniqueItems": true,
       "items": {
         "type": "object",
-        "required": ["type", "name"],
+        "required": ["type", "name", "importance"],
         "properties": {
           "type": {
             "type": "string",
@@ -69,6 +69,10 @@
           "name": {
             "type": "string",
             "minLength": 1
+          },
+          "importance": {
+            "type": "string",
+            "enum": ["required", "core", "significant"]
           },
           "meta": {
             "type": "object",
@@ -128,7 +132,7 @@
     },
     "matches": {
       "type": "array",
-      "description": "比赛关系列表，选填；内容能确定主队与客队时输出，无上限，与 entity 无逻辑关联。",
+      "description": "比赛关系列表，选填；内容能确定主队与客队时输出，无上限，与 entities 无逻辑关联。",
       "items": {
         "type": "object",
         "required": ["home", "away"],
@@ -239,10 +243,10 @@
         "required": ["included"]
       },
       "then": {
-        "required": ["theme", "entity"],
+        "required": ["theme", "entities"],
         "properties": {
           "theme": { "type": "object" },
-          "entity": { "type": "array", "minItems": 1 }
+          "entities": { "type": "array", "minItems": 1 }
         }
       }
     },
@@ -254,7 +258,7 @@
       "then": {
         "properties": {
           "theme": { "type": "null" },
-          "entity": { "type": "null" }
+          "entities": { "type": "null" }
         }
       }
     }
