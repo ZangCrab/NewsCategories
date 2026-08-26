@@ -39,10 +39,10 @@
               "前瞻", "赛前预告", "首发确认", "战报", "赛果", "延期取消",
               "转入转出", "租借", "续约", "解约退役", "教练更迭",
               "伤病更新", "复出时间表", "停赛",
-              "生活动态", "社交媒体热点", "更衣室轶事", "球迷文化", "庆典公益", "球场安保", "法律纠纷",
-              "财政公平", "薪资帽", "赞助合同", "转会费构成", "俱乐部财务", "球票商品",
-              "数据统计", "战术拆解", "专访", "历史数据对比",
-              "规则变更", "章程", "纪律处分", "赛事抽签", "官方公告",
+              "生活动态", "社交媒体热点", "更衣室轶事", "球迷文化", "庆典公益", "社区关系", "球场安保", "法律纠纷",
+              "财政公平", "薪资帽", "赞助合同", "转会费构成", "俱乐部财务", "球票商品", "资本运作",
+              "数据统计", "战术拆解", "专访", "人物特写", "媒体点评", "评论观点", "历史数据对比",
+              "规则变更", "章程", "纪律处分", "赛事抽签", "官员任免", "官方公告",
               "经典回顾", "里程碑纪念", "名宿致敬", "逝世悼念",
               "排名奖项", "比分预测", "胜负倾向", "赔率变化", "博彩解读"
             ]
@@ -64,7 +64,7 @@
         "properties": {
           "type": {
             "type": "string",
-            "enum": ["event", "team", "player", "coach", "organization"]
+            "enum": ["event", "team", "player", "coach", "organization", "referee", "executive", "agent"]
           },
           "name": {
             "type": "string",
@@ -77,10 +77,11 @@
           "meta": {
             "type": "object",
             "properties": {
-              "season": { "type": "string", "pattern": "^\\d{4}-\\d{2}$" },
+              "season": { "type": "string", "pattern": "^\\d{4}(-\\d{2})?$" },
               "category": { "type": "string" },
               "city": { "type": "string" },
               "country": { "type": "string" },
+              "client": { "type": "string" },
               "club": { "type": "string" },
               "birth_year": { "type": "string", "pattern": "^\\d{4}$" },
               "retired": { "type": "boolean" },
@@ -189,7 +190,7 @@
         "required": ["theme"]
       },
       "then": {
-        "properties": { "theme": { "properties": { "sub": { "items": { "enum": ["生活动态", "社交媒体热点", "更衣室轶事", "球迷文化", "庆典公益", "球场安保", "法律纠纷"] } } } } }
+        "properties": { "theme": { "properties": { "sub": { "items": { "enum": ["生活动态", "社交媒体热点", "更衣室轶事", "球迷文化", "庆典公益", "社区关系", "球场安保", "法律纠纷"] } } } } }
       }
     },
     {
@@ -198,7 +199,7 @@
         "required": ["theme"]
       },
       "then": {
-        "properties": { "theme": { "properties": { "sub": { "items": { "enum": ["财政公平", "薪资帽", "赞助合同", "转会费构成", "俱乐部财务", "球票商品"] } } } } }
+        "properties": { "theme": { "properties": { "sub": { "items": { "enum": ["财政公平", "薪资帽", "赞助合同", "转会费构成", "俱乐部财务", "球票商品", "资本运作"] } } } } }
       }
     },
     {
@@ -207,7 +208,7 @@
         "required": ["theme"]
       },
       "then": {
-        "properties": { "theme": { "properties": { "sub": { "items": { "enum": ["数据统计", "战术拆解", "专访", "历史数据对比"] } } } } }
+        "properties": { "theme": { "properties": { "sub": { "items": { "enum": ["数据统计", "战术拆解", "专访", "人物特写", "媒体点评", "评论观点", "历史数据对比"] } } } } }
       }
     },
     {
@@ -216,7 +217,7 @@
         "required": ["theme"]
       },
       "then": {
-        "properties": { "theme": { "properties": { "sub": { "items": { "enum": ["规则变更", "章程", "纪律处分", "赛事抽签", "官方公告"] } } } } }
+        "properties": { "theme": { "properties": { "sub": { "items": { "enum": ["规则变更", "章程", "纪律处分", "赛事抽签", "官员任免", "官方公告"] } } } } }
       }
     },
     {
