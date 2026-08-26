@@ -102,7 +102,7 @@ def label_web(title: str, lead: str, body: str):
 
 
 def build_ui():
-    with gr.Blocks(title="足球新闻分类打标 Demo", theme=gr.themes.Soft()) as demo:
+    with gr.Blocks(title="足球新闻分类打标 Demo") as demo:
         gr.Markdown(
             "# ⚽ 足球新闻分类打标 Demo\n\n"
             "贴一篇足球新闻，点「打标」，实时查看标注结果与 JSON Schema 硬校验。\n\n"
@@ -129,4 +129,4 @@ if __name__ == "__main__":
     parser.add_argument("--share", action="store_true", help="生成公网分享链接，发给老板远程测试")
     args = parser.parse_args()
 
-    build_ui().launch(server_name="0.0.0.0", share=args.share)
+    build_ui().launch(server_name="0.0.0.0", share=args.share, theme=gr.themes.Soft())
