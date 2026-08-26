@@ -148,8 +148,27 @@
       }
     },
     "source": {
-      "type": "string",
-      "description": "消息来源，选填；原文未明确写明来源时省略该字段，禁止臆造。"
+      "type": "object",
+      "description": "消息来源，选填；原文未明确写明来源时省略该字段（禁止臆造）。有来源时 type/reporter/quote 三者必填。",
+      "required": ["type", "reporter", "quote"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["官方与当事人", "媒体与记者", "爆料与泄密", "民间与聚合"],
+          "description": "报道方类型（枚举，4 值）：看报道方身份（谁说的），不看消息内容。官方机构/当事人本人→官方与当事人；专业媒体/记者→媒体与记者；知情第三方爆料（队友/家人/线人）→爆料与泄密；网友/自媒体/聚合→民间与聚合。"
+        },
+        "reporter": {
+          "type": "string",
+          "minLength": 1,
+          "description": "报道方名称（人名/机构名/网友等，自由文本）。"
+        },
+        "quote": {
+          "type": "string",
+          "minLength": 1,
+          "description": "原文原句：正文中写明该来源的那句话，一字不差。引用不出来即视为无来源，省略 source。"
+        }
+      },
+      "additionalProperties": false
     },
     "reason": {
       "type": "string",
