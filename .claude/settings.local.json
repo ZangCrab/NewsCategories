@@ -7,7 +7,10 @@
       "Bash(awk '/## 样本 29/,/## 样本 30/' 金标准样本.md)",
       "Bash(grep -n \"省略.*season\\\\|待 schema\\\\|不落 meta.season\\\\|YYYY-YY 不兼容\\\\|按口径省略 season\\\\|不适用 \\\\`YYYY-YY\\\\`\\\\|沿用赛季格式缺口\" 金标准样本.md)",
       "Bash(grep -n \"待 schema 赛季格式放宽后回填\\\\|沿用赛季格式缺口口径省略\\\\|YYYY-YY 不兼容\\\\|不适用 \\\\`YYYY-YY\\\\` 赛季格式\\\\|不落 meta.season\\\\|按口径省略 season\\\\|硬编码 YYYY-YY\" 金标准样本.md)",
-      "Bash(grep -v \"YYYY-YY\\\\` 或\\\\|YYYY 或 \\\\`YYYY-YY\\\\|YYYY-YY（日历年\\\\|YYYY\\\\` 或 \\\\`YYYY-YY\")"
+      "Bash(grep -v \"YYYY-YY\\\\` 或\\\\|YYYY 或 \\\\`YYYY-YY\\\\|YYYY-YY（日历年\\\\|YYYY\\\\` 或 \\\\`YYYY-YY\")",
+      "Bash(git rev-list *)",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" \"https://raw.githubusercontent.com/ZangCrab/NewsCategories/main/%E4%B8%BB%E9%A2%98.md\")",
+      "Bash(curl -s \"https://raw.githubusercontent.com/ZangCrab/NewsCategories/main/%E4%B8%BB%E9%A2%98.md\")"
     ]
   }
 }
