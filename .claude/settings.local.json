@@ -10,7 +10,8 @@
       "Bash(grep -v \"YYYY-YY\\\\` 或\\\\|YYYY 或 \\\\`YYYY-YY\\\\|YYYY-YY（日历年\\\\|YYYY\\\\` 或 \\\\`YYYY-YY\")",
       "Bash(git rev-list *)",
       "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" \"https://raw.githubusercontent.com/ZangCrab/NewsCategories/main/%E4%B8%BB%E9%A2%98.md\")",
-      "Bash(curl -s \"https://raw.githubusercontent.com/ZangCrab/NewsCategories/main/%E4%B8%BB%E9%A2%98.md\")"
+      "Bash(curl -s \"https://raw.githubusercontent.com/ZangCrab/NewsCategories/main/%E4%B8%BB%E9%A2%98.md\")",
+      "Bash(grep -cE \"^\\\\| [^|]+ \\\\| [^|]+ \\\\| [^|]+ \\\\|$\")"
     ]
   }
 }

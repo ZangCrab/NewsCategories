@@ -16,6 +16,7 @@ import json
 import gradio as gr
 
 import cli  # 复用：SYSTEM_PROMPT、load_api_key()
+import skill_explain  # 从规则文件动态生成底部「主题/实体/收录标准」说明
 import validate
 
 MODEL = "deepseek-chat"  # 打标用这个就够；要换模型改这里
@@ -38,47 +39,6 @@ EXAMPLES = [
         "塞尔维亚网球天王诺瓦克·德约科维奇今日通过社交媒体宣布，将在本年度美网结束后正式退役，结束其长达二十余年的职业生涯。",
     ],
 ]
-
-
-SKILL_EXPLAIN = """---
-## 📖 SKILL 双轨制打标原理
-
-本 SKILL 用**两条互相独立、必须组合**的轨道给足球新闻打标：
-
-- **主题（`theme`）** —— 回答「这篇文章是什么**体裁/话题**」。九选一主类 + 1–2 个子类（共 51 子类）。
-- **实体（`entities`）** —— 回答「这篇内容关于**谁 / 什么比赛**」。8 种实体类型，只打重点（`required` 第一优先级 / `core` 核心论断对象 / `significant` 显著提及）。
-
-二者互不影响；另附**消息来源（`source`，选填，对象化 `type`/`reporter`/`quote`）**标注「谁报道的」，以及 `transfers` / `coach_changes` / `matches` 关系列表（选填）、`reason`（理由，必填）。
-
-### 主题（9 主类 · 51 子类）
-
-| 主类 | 子类 |
-| --- | --- |
-| 比赛报道 | 前瞻 · 赛前预告 · 首发确认 · 战报 · 赛果 · 延期取消 |
-| 转会与合同 | 转入转出 · 租借 · 续约 · 解约退役 · 教练更迭 |
-| 伤病与停赛 | 伤病更新 · 复出时间表 · 停赛 |
-| 场外与花边 | 生活动态 · 社交媒体热点 · 更衣室轶事 · 球迷文化 · 庆典公益 · 社区关系 · 球场安保 · 法律纠纷 |
-| 财务与商业 | 财政公平 · 薪资帽 · 赞助合同 · 转会费构成 · 俱乐部财务 · 球票商品 · 资本运作 |
-| 深度分析 | 数据统计 · 战术拆解 · 专访 · 人物特写 · 媒体点评 · 评论观点 · 历史数据对比 |
-| 行政与管理 | 规则变更 · 章程 · 纪律处分 · 赛事抽签 · 官员任免 · 官方公告 |
-| 历史与文化 | 经典回顾 · 里程碑纪念 · 名宿致敬 · 逝世悼念 |
-| 比赛预测 | 排名奖项 · 比分预测 · 胜负倾向 · 赔率变化 · 博彩解读 |
-
-### 实体（8 种类型）
-
-| type | 含义 |
-| --- | --- |
-| `event` | 赛事（联赛 / 杯赛 / 比赛） |
-| `team` | 球队（俱乐部 / 国家队 / 代表队） |
-| `player` | 球员 |
-| `coach` | 教练 |
-| `organization` | 机构 / 行政主体（含赞助商、监管机构等） |
-| `referee` | 裁判（主裁 / 助理 / VAR 等执法者） |
-| `executive` | 管理层及足球从业者（主席 / CEO / 体育总监 / 媒体人 / 评论员等） |
-| `agent` | 经纪人（球员 / 教练经纪） |
-
-> 主题主类/子类与实体类型的枚举合法性由《主题.md》《实体.md》定义，《返回结构.schema.json》硬校验。
-"""
 
 
 def _get_client():
@@ -163,7 +123,7 @@ def build_ui():
 
         btn.click(label_web, inputs=[title, lead, body], outputs=[out_json, out_valid])
 
-        gr.Markdown(SKILL_EXPLAIN)
+        gr.Markdown(skill_explain.build_skill_explain())
     return demo
 
 
