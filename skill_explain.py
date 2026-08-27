@@ -14,6 +14,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 THEME_MD = os.path.join(BASE_DIR, "主题.md")
 ENTITY_MD = os.path.join(BASE_DIR, "实体.md")
 CRITERIA_MD = os.path.join(BASE_DIR, "收录标准.md")
+RETURN_MD = os.path.join(BASE_DIR, "返回结构.md")
 
 
 def _read(path):
@@ -120,11 +121,21 @@ def load_criteria():
     return result
 
 
+def load_source_types():
+    """《返回结构.md》→ [(type, 报道方身份, 例子), ...]。"""
+    data = _find_table(_read(RETURN_MD), ("type", "报道方身份（原文定性）"))
+    out = [(row[0], row[1], row[2]) for row in data if len(row) >= 3]
+    if not out:
+        raise RuntimeError("《返回结构.md》source 的 type 枚举表解析为空")
+    return out
+
+
 def build_skill_explain():
-    """生成网页底部说明板块的 markdown（主题表 + 收录标准表 + 实体表）。"""
+    """生成网页底部说明板块的 markdown（主题表 + 收录标准表 + 实体表 + source 表）。"""
     themes = load_themes()
     entities = load_entities()
     criteria = load_criteria()
+    source_types = load_source_types()
 
     n_subs = sum(len(subs) for _, subs in themes)
 
@@ -177,6 +188,26 @@ def build_skill_explain():
         lines.append(f"| `{typ}` | {meaning} |")
 
     lines += [
+        "",
+        "### 消息来源（source）",
+        "",
+        "`source` 为**选填**，对象化 `type` / `reporter` / `quote` 三字段，标注「这则消息是谁报道/发布的」。",
+        "",
+        "**划分方式**：看**报道方身份（谁说的）**，不看消息内容。`type` 为 4 值枚举：",
+        "",
+        "| type | 报道方身份（谁说的） | 例子 |",
+        "| --- | --- | --- |",
+    ]
+    for typ, identity, example in source_types:
+        lines.append(f"| {typ} | {identity} | {example} |")
+
+    lines += [
+        "",
+        "- `type` —— 报道方类型（上表 4 值枚举）。",
+        "- `reporter` —— 报道方名称（自由文本：人名/机构名/网友等，不可枚举）。",
+        "- `quote` —— 原文原句，一字不差。",
+        "",
+        "**防臆造硬约束**：`quote` 引用不出原文原句 = 无来源 = 整个 `source` 省略；不得据常识/上下文/实体名推断报道方。`source` 与 `entities` 独立——source 标注「谁发的」，entities 标注「讲的是谁」。",
         "",
         "> 主题主类/子类与实体类型的枚举合法性由《主题.md》《实体.md》定义，《返回结构.schema.json》硬校验。",
     ]
